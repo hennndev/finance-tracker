@@ -8,8 +8,14 @@ use Inertia\Inertia;
 
 class IncomesController extends Controller
 {
-    public function index() {
-        $data = Income::all();
+    public function index(Request $request) {
+        $page = $request->query("page");
+        $data = Income::latest()->paginate(10);
+
+        if($page > $data->lastPage()) {
+            return redirect()->route('incomes');
+        }
+
         return Inertia::render("admin/Incomes", [
             "title" => "Incomes",
             "data" => $data

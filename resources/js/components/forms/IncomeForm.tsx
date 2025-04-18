@@ -1,32 +1,61 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import { toast } from 'sonner'
+import { format } from 'date-fns'
 import { useForm } from '@inertiajs/react'
+import { useIncomeTemp } from '../../store/useIncomeTemp'
 
 type PropsTypes = {
   closeModal: () => void
 }
 
 const IncomeForm = ({ closeModal }: PropsTypes) => {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, put, processing, errors, reset } = useForm({
     name: "",
     category: "",
     amount: "",
     description: "",
-    transaction_date: "",
+    transaction_date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
     payment: ""
   })
+  const { dataTemp } = useIncomeTemp()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    post('/admin/incomes', {
-      onSuccess: () => {
-        reset()
-        closeModal()
-        toast.success("New income has added")
-      },
-    })
+    if(!dataTemp) {
+      post('/admin/incomes', {
+        onSuccess: () => {
+          reset()
+          closeModal()
+          toast.success("New income has added")
+        },
+      })
+    } else {
+      if(dataTemp.name === data.name && dataTemp.category === data.category && dataTemp.amount.toString() === data.amount && dataTemp.description === data.description && new Date(dataTemp.transaction_date).toDateString() === new Date(data.transaction_date).toDateString() && dataTemp.payment === data.payment) {
+        toast.warning('No data has changed')
+        return
+      }
+      put(`/admin/incomes/${dataTemp.id}`, {
+        onSuccess: () => {
+          reset()
+          closeModal()
+          toast.success("Income data has updated")
+        }
+      })
+    }
   }
+
+  useEffect(() => {
+    if(dataTemp) {
+      setData("name", dataTemp.name)
+      setData("category", dataTemp.category)
+      setData("amount", dataTemp.amount.toString())
+      setData("payment", dataTemp.payment)
+      setData("description", dataTemp.description)
+      setData("transaction_date", format(new Date(dataTemp.transaction_date), "yyyy-MM-dd'T'HH:mm"))
+    }
+  }, [dataTemp])
+  
 
   return (
     <form onSubmit={handleSubmit}>

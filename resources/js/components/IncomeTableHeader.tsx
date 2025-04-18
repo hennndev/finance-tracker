@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
 import IncomeModal from './modals/IncomeModal'
+import { useIncomeTemp } from '../store/useIncomeTemp'
 import { LuChevronDown, LuPlus, LuDownload } from 'react-icons/lu'
 
 const IncomeTableHeader = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
+  const { dataTemp, deleteData } = useIncomeTemp()
 
   const handleOpenModal = () => setOpenModal(true) 
-  const handleCloseModal = () => setOpenModal(false) 
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    deleteData()
+  } 
   
   return (
     <>
@@ -38,7 +43,7 @@ const IncomeTableHeader = () => {
         </div>
         <h3 className='text-gray-500 text-sm mt-5'>{format(new Date(), "ddMM/yyyy")}</h3>
       </div>
-      {openModal && (
+      {(openModal || dataTemp) && (
         <IncomeModal closeModal={handleCloseModal}/>
       )}
     </>
