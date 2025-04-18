@@ -9,12 +9,12 @@ const IncomeTableHeader = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
   const { dataTemp, deleteData } = useIncomeTemp()
 
-  const handleOpenModal = () => setOpenModal(true) 
+  const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => {
     setOpenModal(false)
     deleteData()
-  } 
-  
+  }
+
   return (
     <>
       <div className='flex flex-col space-y-3'>
@@ -44,7 +44,7 @@ const IncomeTableHeader = () => {
         <h3 className='text-gray-500 text-sm mt-5'>{format(new Date(), "ddMM/yyyy")}</h3>
       </div>
       {(openModal || dataTemp) && (
-        <IncomeModal closeModal={handleCloseModal}/>
+        <IncomeModal closeModal={handleCloseModal} />
       )}
     </>
   )
