@@ -7,10 +7,11 @@ import { useIncomeTemp } from '../../store/useIncomeTemp'
 import ConfirmationModal from '../../components/modals/ConfirmationModal'
 import { toast } from 'sonner'
 import Pagination from '../../components/Pagination'
+import TableHeader from '../../components/TableHeader'
 
 type PropsTypes = {
   title: string
-  data: Pagination<IncomeResponseTypes>
+  data: Pagination<TransactionResponseTypes>
 }
 
 const Incomes = ({ title, data }: PropsTypes) => {
@@ -33,8 +34,6 @@ const Incomes = ({ title, data }: PropsTypes) => {
     setOpenModalDelete(value)
   }
 
-  console.log(data)
-
   return (
     <>
       <Head>
@@ -42,7 +41,7 @@ const Incomes = ({ title, data }: PropsTypes) => {
       </Head>
       <MainLayout>
         <section className='p-10'>
-          <IncomeTableHeader />
+          <TableHeader transactionName='expenses'/>
           {/* table */}
           <div className="relative overflow-x-auto mt-10">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -72,7 +71,7 @@ const Incomes = ({ title, data }: PropsTypes) => {
                 </tr>
               </thead>
               <tbody>
-                {data.data.map((tr: IncomeResponseTypes, index: number) => (
+                {data.data.map((tr: TransactionResponseTypes, index: number) => (
                   <tr className="bg-white border-b border-gray-200">
                     <td scope="row" className="px-6 py-4">
                       {(index + 1) + (data.current_page - 1) * 10}

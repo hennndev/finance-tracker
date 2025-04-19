@@ -24,7 +24,7 @@ type Pagination<T> = {
 
 
 
-interface IncomeTypes {
+interface TransactionTypes {
   name: string
   category: string
   amount: number
@@ -33,6 +33,6 @@ interface IncomeTypes {
   transaction_date: Date
 }
 
-type IncomeResponseTypes = IncomeTypes & {
+type TransactionResponseTypes = TransactionTypes & {
   id: number
 }

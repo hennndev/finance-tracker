@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\IncomesController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("admin")->group(function() {
@@ -19,3 +20,6 @@ Route::prefix("admin")->group(function() {
         Route::delete("/expenses/{id}", "destroy")->name("expenses.destroy");
     });
 });
+
+Route::get('/export-pdf', [PDFController::class, 'export']);
+

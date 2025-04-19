@@ -16,14 +16,39 @@ class ExpensesController extends Controller
             return redirect()->route('incomes');
         }
         return Inertia::render("admin/Expenses", [
-            "title" => "Incomes",
+            "title" => "Expenses",
             "data" => $data
         ]);
     }
 
-    public function store() {}
+    public function store(Request $request) {
+        $validated_data = $request->validate([
+            "name" => "required|string|min:3",
+            "category" => "required|string",
+            "amount" => "required|integer",
+            "payment" => "required|string",
+            "description" => "required|string",
+            "transaction_date" => "required|date"
+        ]);
+        Expense::create($validated_data);
+        return to_route("expenses");
+    }
 
-    public function update() {}
+    public function update(Request $request, $id) {
+        $validated_data = $request->validate([
+            "name" => "required|string|min:3",
+            "category" => "required|string",
+            "amount" => "required|integer",
+            "payment" => "required|string",
+            "description" => "required|string",
+            "transaction_date" => "required|date"
+        ]);
+        Expense::where("id", $id)->update($validated_data);
+        return to_route("expenses");
+    }
 
-    public function destroy() {}
+    public function destroy($id) {
+        Expense::where("id", $id)->delete();
+        return back()->with("success", "Success delete income data");
+    }
 }
