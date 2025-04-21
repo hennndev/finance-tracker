@@ -12,23 +12,28 @@ const Pagination = ({ current_page, last_page }: PaginationProps) => {
   const params = new URLSearchParams(url.split('?')[1])
   const query_page = params.get("page") || null
 
-  console.log(query_page)
-
   const generatePages = () => {
-    const delta = 2 // 2 di kiri dan 2 di kanan
+    const delta = 2 
     let start = Math.max(1, ((current_page - delta) + 2) - 1)
     const isLast = last_page - start
-    if (isLast < 5) {
+    if (last_page > 5 && isLast < 5) {
       start = last_page - 4
     }
-    const end = Math.min(last_page, ((current_page + delta) + 2))
+    let end = Math.min(last_page, ((current_page + delta) + 2))
 
+    if(last_page < 6) {
+      start = 1
+      end = last_page
+    }
+    
     const pages = []
     for (let i = start; i <= end; i++) {
       pages.push(i)
     }
     return pages
   }
+
+
 
   useEffect(() => {
     const page = Number(query_page);

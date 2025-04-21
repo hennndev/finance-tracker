@@ -12,8 +12,8 @@ class ExpensesController extends Controller
         $page = $request->query("page");
         $data = Expense::latest()->paginate(10);
 
-        if($page > $data->lastPage()) {
-            return redirect()->route('incomes');
+        if($page > $data->lastPage() || $page < 0) {
+            return redirect()->route('expenses');
         }
         return Inertia::render("admin/Expenses", [
             "title" => "Expenses",

@@ -25,7 +25,13 @@
     </style>
 </head>
 <body>
-    <h2>Laporan Data Pemasukan</h2>
+    @if ($transaction_name === "incomes")
+        <h2>Laporan Data Pemasukan</h2>
+    @endif
+
+    @if ($transaction_name === "expenses")
+        <h2>Laporan Data Pengeluaran</h2>
+    @endif
     
     <table>
         <thead>
@@ -39,14 +45,14 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($incomes as $index => $income)
+            @forelse ($transactions as $index => $tr)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $income->name }}</td>
-                    <td>{{ $income->category }}</td>
-                    <td>Rp {{ number_format($income->amount, 0, ',', '.') }}</td>
-                    <td>{{ $income->description }}</td>
-                    <td>{{ \Carbon\Carbon::parse($income->transaction_date)->format('d-m-Y H:i') }}</td>
+                    <td>{{ $tr->name }}</td>
+                    <td>{{ $tr->category }}</td>
+                    <td>Rp {{ number_format($tr->amount, 0, ',', '.') }}</td>
+                    <td>{{ $tr->description }}</td>
+                    <td>{{ \Carbon\Carbon::parse($tr->transaction_date)->format('d-m-Y H:i') }}</td>
                 </tr>
             @empty
                 <tr>

@@ -104,7 +104,7 @@ const Incomes = ({ title, data }: PropsTypes) => {
             <p className='text-center text-sm text-gray-400 mt-10'>Income transaction didn't created yet for currently</p>
           )}
 
-          {data.data.length > 0 && (
+          {data.total > 10 && (
             <div className='flex-center mt-10'>
               <Pagination current_page={data.current_page} last_page={data.last_page}/>
             </div>

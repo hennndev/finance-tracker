@@ -19,7 +19,8 @@ Route::prefix("admin")->group(function() {
         Route::put("/expenses/{id}", "update")->name("expenses.update");
         Route::delete("/expenses/{id}", "destroy")->name("expenses.destroy");
     });
+
+    Route::get('/export-pdf/{transaction_name}', [PDFController::class, 'export']);
 });
 
-Route::get('/export-pdf', [PDFController::class, 'export']);
 

@@ -12,10 +12,9 @@ class IncomesController extends Controller
         $page = $request->query("page");
         $data = Income::latest()->paginate(10);
 
-        if($page > $data->lastPage()) {
+        if($page > $data->lastPage() || $page < 0) {
             return redirect()->route('incomes');
         }
-
         return Inertia::render("admin/Incomes", [
             "title" => "Incomes",
             "data" => $data
